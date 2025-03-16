@@ -1,8 +1,8 @@
 "use client";
-import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { NavData } from "@/lib/landing-data";
 import { HandCoins } from "lucide-react";
+import Link from "next/link";
 
 interface ItemProps {
   title: string;
@@ -15,9 +15,9 @@ const Header = () => {
       <div className=" flex h-16 items-center justify-between mx-auto container">
         <div className="flex items-center gap-2 font-bold text-xl">
           <HandCoins />
-          <a href="/" className="text-primary">
+          <Link href="/" className="text-primary">
             ChipIn
-          </a>
+          </Link>
         </div>
         <nav className="hidden md:flex gap-8">
           {NavData.map((item, index) => (
@@ -34,11 +34,11 @@ const Header = () => {
 
 export { Header };
 
-const Item: React.FC<ItemProps> = memo(({ title, path }) => (
+const Item: React.FC<ItemProps> = ({ title, path }) => (
   <a
     href={path}
     className="text-sm font-medium hover:text-primary transition-colors"
   >
     {title}
   </a>
-));
+);
