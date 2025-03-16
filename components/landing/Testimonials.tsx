@@ -22,8 +22,8 @@ const Testimonials = () => {
               What Our Users Say
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Don't just take our word for it. Here's what people love about
-              ChipIn.
+              Don&pos;t just take our word for it. Here&pos;s what people love
+              about ChipIn.
             </p>
           </div>
         </div>
