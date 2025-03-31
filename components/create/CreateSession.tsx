@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -14,9 +15,12 @@ import { useState } from "react";
 import { CustomButton } from "../shared/CustomButton";
 import { useForm } from "react-hook-form";
 import { Session } from "@/types/session";
+import { useSessionStore } from "@/store/sessionStore";
 
 const CreateSession = () => {
   const router = useRouter();
+  const { setSessionId } = useSessionStore();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -39,6 +43,7 @@ const CreateSession = () => {
       const result = await res.json();
 
       if (res.ok) {
+        setSessionId(result.id);
         router.push(`/dashboard/${result.id}`);
       } else {
         alert(result.error || "Failed to create session.");
