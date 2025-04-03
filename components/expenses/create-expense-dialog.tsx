@@ -37,7 +37,8 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const [paidBy, setPaidBy] = useState<string[]>([]);
+  // const [paidBy, setPaidBy] = useState<string[]>([]);
+  const [paidBy, setPaidBy] = useState<Record<string, number>>({});
   const [splitAmong, setSplitAmong] = useState<string[]>([]);
 
   if (!event?.id) {
@@ -55,14 +56,6 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
   } = useForm<Omit<Expense, "event_id">>({
     mode: "onChange",
   });
-
-  const togglePaidBy = (participantId: string) => {
-    setPaidBy((prev) =>
-      prev.includes(participantId)
-        ? prev.filter((id) => id !== participantId)
-        : [...prev, participantId]
-    );
-  };
 
   const toggleSplitAmong = (participantId: string) => {
     setSplitAmong((prev) =>
@@ -84,9 +77,15 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
     setIsLoading(true);
     try {
       if (!session_id) {
-        toast.error("Session ID is missing.");
         return;
       }
+
+      const paidByArray = Object.entries(paidBy)
+        .filter(([_, amount]) => amount > 0)
+        .map(([participant_id, amount]) => ({
+          participant_id,
+          amount,
+        }));
 
       if (paidBy.length === 0) {
         toast.error("Select at least one participant who paid.");
@@ -101,14 +100,14 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
       await createExpense({
         ...data,
         amount: parseFloat(data.amount),
-        paidBy,
+        paidBy: paidByArray,
         splitAmong,
         date: new Date().toISOString(),
       });
 
       setIsDrawerOpen(false);
       reset();
-      setPaidBy([]);
+      setPaidBy({});
       setSplitAmong([]);
     } catch (err) {
       console.error("Error creating expense:", err);
@@ -122,10 +121,7 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent className='flex flex-col max-h-[90vh]'>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className='flex flex-col flex-1 overflow-hidden'
-        >
+        <div className='flex flex-col flex-1 overflow-hidden'>
           <DrawerHeader>
             <div className='flex items-center gap-2 mb-2'>
               <div className='flex h-8 w-8 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800'>
@@ -177,47 +173,56 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
                   )}
                 </div>
 
-                <div className='grid gap-2'>
-                  <Label>Paid by</Label>
-                  <div className='grid gap-2 p-3 border rounded-md bg-zinc-50 dark:bg-zinc-900 max-h-[200px] overflow-y-auto'>
-                    {participants.map((participant) => (
+                <Label>Paid by</Label>
+                <div className='grid gap-2 p-3 border rounded-md bg-zinc-50 dark:bg-zinc-900 max-h-[200px] overflow-y-auto'>
+                  {participants.map((participant) => {
+                    const isChecked = paidBy[participant.id!] !== undefined;
+
+                    return (
                       <div
                         key={`paid-${participant.id}`}
                         className='flex items-center space-x-2'
                       >
                         <Checkbox
                           id={`paid-${participant.id}`}
-                          checked={
-                            participant.id
-                              ? paidBy.includes(participant.id)
-                              : false
-                          }
-                          onCheckedChange={() =>
-                            participant.id && togglePaidBy(participant.id)
-                          }
-                          className='data-[state=checked]:bg-zinc-900 data-[state=checked]:text-zinc-50 dark:data-[state=checked]:bg-zinc-50 dark:data-[state=checked]:text-zinc-900'
+                          checked={isChecked}
+                          onCheckedChange={(checked) => {
+                            setPaidBy((prev) => {
+                              const updated = { ...prev };
+                              if (checked) {
+                                updated[participant.id!] = 0;
+                              } else {
+                                delete updated[participant.id!];
+                              }
+                              return updated;
+                            });
+                          }}
                         />
                         <Label
                           htmlFor={`paid-${participant.id}`}
-                          className='cursor-pointer text-sm font-normal'
+                          className='cursor-pointer text-sm font-normal flex-1'
                         >
-                          <Image
-                            src={`https://api.dicebear.com/9.x/big-ears/png?seed=${participant.name}`}
-                            alt='Cute Avatar'
-                            width={48}
-                            height={48}
-                            className='size-5 rounded-full'
-                          />
                           {participant.name}
                         </Label>
+
+                        {isChecked && (
+                          <Input
+                            type='number'
+                            min='0'
+                            className='w-24 h-8'
+                            value={paidBy[participant.id!]}
+                            onChange={(e) => {
+                              const value = parseFloat(e.target.value) || 0;
+                              setPaidBy((prev) => ({
+                                ...prev,
+                                [participant.id!]: value,
+                              }));
+                            }}
+                          />
+                        )}
                       </div>
-                    ))}
-                  </div>
-                  {paidBy.length === 0 && (
-                    <p className='text-xs text-destructive'>
-                      Select at least one person who paid
-                    </p>
-                  )}
+                    );
+                  })}
                 </div>
 
                 {/* Split Among */}
@@ -280,14 +285,14 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
 
           {/* Always visible footer */}
           <DrawerFooter className='border-t mt-auto'>
-            <Button type='submit' disabled={!isValid}>
+            <Button onClick={handleSubmit(onSubmit)} disabled={!isValid}>
               Create Expense
             </Button>
             <DrawerClose asChild>
               <Button variant='outline'>Cancel</Button>
             </DrawerClose>
           </DrawerFooter>
-        </form>
+        </div>
       </DrawerContent>
     </Drawer>
   );
