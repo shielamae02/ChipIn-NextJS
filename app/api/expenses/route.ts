@@ -183,3 +183,21 @@ export async function POST(request: Request) {
 
   return NextResponse.json(expenseInsert.data);
 }
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const event_id = searchParams.get("event_id");
+
+  const query = supabase.from("expenses").select("*");
+
+  if (event_id) {
+    query.eq("event_id", event_id);
+  }
+
+  const { data, error } = await query.order("created_at", { ascending: false });
+
+  if (error)
+    return NextResponse.json({ error: error.message }, { status: 400 });
+
+  return NextResponse.json(data);
+}
