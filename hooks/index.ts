@@ -8,5 +8,6 @@ export { default as useDeleteParticipant } from "./participants/useDeletePartici
 export { default as useCreateEvent } from "./events/useCreateEvent";
 export { default as useEvents } from "./events/useEvents";
 
-export { default as useCreateExpense } from "./expenses/useCreateExpense";
 export { default as useExpenses } from "./expenses/useExpenses";
+export { default as useCreateExpense } from "./expenses/useCreateExpense";
+export { default as useUpdateExpense } from "./expenses/useUpdateExpense";
