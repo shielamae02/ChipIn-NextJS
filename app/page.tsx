@@ -9,12 +9,6 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { CallToAction } from "@/components/landing/CallToAction";
 
-export const metadata: Metadata = {
-  title: "ChipIn | Simplify Shared Expenses",
-  description:
-    "Effortlessly split costs for trips, events, and daily expenses with our easy-to-use web-based tool.",
-};
-
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col w-full">
