@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
-import CreateSession from "@/components/create/CreateSession";
+import { ArrowLeft } from "lucide-react";
+import CreateSession from "@/components/session/create-session";
 
 export const metadata: Metadata = {
   title: "Create Session | ChipIn",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <section className='min-h-screen bg-gradient-to-b from-background to-muted flex flex-col'>
-      <header className='container mx-auto px-4 sm:px-0 py-10'>
+      <header className='container mx-auto px-4 sm:px-2 py-10'>
         <Button size='icon' variant='ghost' asChild>
           <Link href='/'>
             <ArrowLeft className='h-5 w-5' />
