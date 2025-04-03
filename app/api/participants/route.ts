@@ -57,3 +57,25 @@ export async function DELETE(request: Request) {
 
   return NextResponse.json({ message: "Participant deleted successfully." });
 }
+
+export async function PUT(request: Request) {
+  const body = await request.json();
+  const { id, name } = body;
+
+  if (!id || !name) {
+    return NextResponse.json(
+      { error: "Participant ID and name are required." },
+      { status: 400 }
+    );
+  }
+
+  const { error } = await supabase
+    .from("participants")
+    .update({ name })
+    .eq("id", id);
+
+  if (error)
+    return NextResponse.json({ error: error.message }, { status: 400 });
+
+  return NextResponse.json({ message: "Participant updated successfully." });
+}
