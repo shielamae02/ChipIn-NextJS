@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useParams } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { UpdateExpenseDialog } from "../expenses/update-expense-dialog";
 import { CreateExpenseDialog } from "../expenses/create-expense-dialog";
 import { Plus, Receipt, Clock } from "lucide-react";
 import { formatCurrency, formatTime } from "@/lib/utils";
@@ -69,17 +70,20 @@ const EventCard = (event: Event) => {
             <ScrollArea className='h-44 pr-1.5'>
               <div className='space-y-2'>
                 {expenses.map((expense) => (
-                  <div
+                  <UpdateExpenseDialog
+                    expenseId={expense.id!}
+                    event={event}
                     key={expense.id}
-                    className='flex justify-between items-center text-sm py-1.5 px-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors group'
                   >
-                    <span>{expense.description}</span>
-                    <div className='flex items-center gap-2'>
-                      <span className='font-medium'>
-                        {formatCurrency(expense.amount)}
-                      </span>
+                    <div className='flex justify-between items-center text-sm py-1.5 px-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors group'>
+                      <span>{expense.description}</span>
+                      <div className='flex items-center gap-2'>
+                        <span className='font-medium'>
+                          {formatCurrency(expense.amount)}
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  </UpdateExpenseDialog>
                 ))}
               </div>
             </ScrollArea>
