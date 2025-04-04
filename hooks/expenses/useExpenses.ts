@@ -10,7 +10,7 @@ const useExpenses = (event_id?: string) => {
       const response = await fetch(`/api/expenses?event_id=${event_id}`);
 
       if (!response.ok) {
-        throw new Error("Failed to fetch events");
+        throw new Error("Failed to fetch expenses");
       }
 
       return response.json();
