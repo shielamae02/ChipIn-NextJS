@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
-import CreateSession from "@/components/session/create-session";
+import CreateSession from "@/components/session/CreateSession";
 
 export const metadata: Metadata = {
   title: "Create Session | ChipIn",
