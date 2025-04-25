@@ -1,12 +1,12 @@
 "use client";
 
-import { EventCard } from "@/components/events/event-card";
+import { EventCard } from "@/components/events/EventCard";
 import { useEvents } from "@/hooks";
 import { useParams } from "next/navigation";
-import { EmptyEvents } from "@/components/events/empty-events";
-import { EventCardSkeleton } from "@/components/events/events-skeleton-card";
+import { EmptyEvents } from "@/components/events/EmptyEventsCard";
+import { EventCardSkeleton } from "@/components/events/EventsCardSkeleton";
 import { Button } from "@/components/ui/button";
-import { CreateEventDialog } from "@/components/events/create-event-dialog";
+import { CreateEventDialog } from "@/components/events/CreateEventDialog";
 
 export default function Page() {
   const { id } = useParams();

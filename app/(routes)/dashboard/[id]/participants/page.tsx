@@ -3,9 +3,9 @@
 import { Users } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useParticipants } from "@/hooks";
-import { ParticipantCard } from "@/components/participants/participant-card";
-import { CreateParticipant } from "@/components/participants/create-participant";
-import { ParticipantSkeletonList } from "@/components/participants/participants-skeleton-list";
+import { ParticipantCard } from "@/components/participants/ParticipantCard";
+import { CreateParticipant } from "@/components/participants/CreateParticipant";
+import { ParticipantSkeletonList } from "@/components/participants/ParticipantsListSkeleton";
 import {
   Card,
   CardContent,
@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ParticipantsWarningCard } from "@/components/participants/warning-card";
+import { ParticipantsWarningCard } from "@/components/participants/ParticipantsWarningCard";
 
 export default function Page() {
   const { id } = useParams();
