@@ -27,7 +27,7 @@ const CreateSession = () => {
   const session_id = id as string;
 
   const { createSession } = useCreateSession();
-  const { createParticipant } = useCreateParticipant(session_id);
+  const { createParticipant } = useCreateParticipant();
 
   const {
     register,
@@ -41,9 +41,12 @@ const CreateSession = () => {
 
     try {
       const response = await createSession(data);
-      await createParticipant({ name: data.name });
+      await createParticipant({
+        values: { name: data.creator },
+        session_id: response.id,
+      });
       reset();
-      router.push(`/dashboard/${response.id}`);
+      router.push(`/dashboard/${response.id}/participants`);
     } catch (err) {
       console.error("Error creating session:", err);
       toast.error("Something went wrong.");
