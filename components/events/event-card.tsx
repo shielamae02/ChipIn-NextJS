@@ -76,6 +76,7 @@ const EventCard = (event: Event) => {
                     key={expense.id}
                   >
                     <div className='flex justify-between items-center text-sm py-1.5 px-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors group'>
+                      <span>{formatTime(expense.created_at!)}</span>
                       <span>{expense.description}</span>
                       <div className='flex items-center gap-2'>
                         <span className='font-medium'>
