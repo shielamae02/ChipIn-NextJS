@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { Calendar1 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { useSessionStore } from "@/store/sessionStore";
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function DashboardLayout({
