@@ -4,6 +4,11 @@ import { toast } from "sonner";
 import { Participant } from "@/types/participant";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+interface CreateParticipantPaylod {
+  values: Participant;
+  session_id: string;
+}
+
 const createParticipantRequest = async (
   values: Participant,
   session_id: string
@@ -24,13 +29,13 @@ const createParticipantRequest = async (
   return response;
 };
 
-const useCreateParticipant = (session_id: string) => {
+const useCreateParticipant = () => {
   const queryClient = useQueryClient();
 
   const { mutateAsync: createParticipant } = useMutation({
-    mutationFn: async (participant: Participant) =>
-      await createParticipantRequest(participant, session_id),
-    onSuccess: () => {
+    mutationFn: async ({ values, session_id }: CreateParticipantPaylod) =>
+      await createParticipantRequest(values, session_id),
+    onSuccess: (_, { session_id }) => {
       queryClient.invalidateQueries({
         queryKey: ["participants", session_id],
       });
