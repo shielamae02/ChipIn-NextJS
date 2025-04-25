@@ -16,7 +16,7 @@ export default function Page() {
       <header className='container mx-auto px-4 sm:px-2 py-10'>
         <Button size='icon' variant='ghost' asChild>
           <Link href='/'>
-            <ArrowLeft className='h-5 w-5' />
+            <ArrowLeft className='size-5' />
           </Link>
         </Button>
       </header>
