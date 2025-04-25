@@ -18,7 +18,7 @@ const CreateParticipant = ({
   const { id } = useParams();
   const session_id = id as string;
 
-  const { createParticipant } = useCreateParticipant(session_id);
+  const { createParticipant } = useCreateParticipant();
 
   const {
     register,
@@ -34,7 +34,10 @@ const CreateParticipant = ({
 
     try {
       if (session_id) {
-        await createParticipant({ name: data.name });
+        await createParticipant({
+          values: { name: data.name },
+          session_id: session_id,
+        });
       } else {
         console.error("Session ID is undefined.");
         toast.error("Session ID is missing.");
