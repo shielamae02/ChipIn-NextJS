@@ -5,31 +5,43 @@ import { useEvents } from "@/hooks";
 import { useParams } from "next/navigation";
 import { EmptyEvents } from "@/components/events/empty-events";
 import { EventCardSkeleton } from "@/components/events/events-skeleton-card";
+import { Button } from "@/components/ui/button";
+import { CreateEventDialog } from "@/components/events/create-event-dialog";
 
 export default function Page() {
   const { id } = useParams();
   const session_id = id as string;
   const { events, isLoading } = useEvents(session_id);
 
-  console.log(id);
-
   return (
-    <section className='w-full flex-grow'>
-      {isLoading ? (
-        <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
-          {[...Array(3)].map((_, i) => (
-            <EventCardSkeleton key={i} />
-          ))}
-        </div>
-      ) : events.length === 0 ? (
-        <EmptyEvents />
-      ) : (
-        <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
-          {events.map((event) => (
-            <EventCard {...event} key={event.id} />
-          ))}
-        </div>
-      )}
-    </section>
+    <>
+      <section className='w-full flex-grow'>
+        {isLoading ? (
+          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
+            {[...Array(3)].map((_, i) => (
+              <EventCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : events.length === 0 ? (
+          <EmptyEvents />
+        ) : (
+          <>
+            <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
+              {events.map((event) => (
+                <EventCard {...event} key={event.id} />
+              ))}
+            </div>
+            <CreateEventDialog>
+              <Button
+                size='lg'
+                className='fixed bottom-6 h-14 text-sm right-5 bg-zinc-800 hover:bg-zinc-900 text-white rounded-full shadow-lg transition duration-300 cursor-pointer'
+              >
+                + Add Event
+              </Button>
+            </CreateEventDialog>
+          </>
+        )}
+      </section>
+    </>
   );
 }
