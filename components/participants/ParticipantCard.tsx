@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Participant } from "@/types/participant";
 import { Pencil, Trash2 } from "lucide-react";
 import { useSessionStore } from "@/store/sessionStore";
-import { ConfirmationDialog } from "@/components/common/confirmation-dialog";
+import { ConfirmationDialog } from "@/components/common/ConfirmationDialog";
 import { useDeleteParticipant } from "@/hooks";
-import { UpdateParticipantDialog } from "@/components/participants/update-participant-dialog";
+import { UpdateParticipantDialog } from "@/components/participants/UpdateParticipantDialog";
 
 interface ParticipantCardProps {
   participant: Participant;

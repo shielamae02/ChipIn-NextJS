@@ -4,8 +4,8 @@ import { useSessionStore } from "@/store/sessionStore";
 import { ArrowLeft, Copy, ScanQrCode, Share2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { ShareQRCodeDialog } from "./share-qrcode-dialog";
-import { ShareSessionDialog } from "./share-session-dialog";
+import { ShareQRCodeDialog } from "./ShareQRCodeDialog";
+import { ShareSessionDialog } from "./ShareSessionDialog";
 import { Skeleton } from "../ui/skeleton";
 
 const DashboardHeader = () => {

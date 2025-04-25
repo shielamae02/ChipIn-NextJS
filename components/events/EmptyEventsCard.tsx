@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CreateEventDialog } from "./create-event-dialog";
+import { CreateEventDialog } from "./CreateEventDialog";
 
 const EmptyEvents = () => {
   return (

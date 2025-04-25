@@ -9,7 +9,7 @@ import { Participant } from "@/types/participant";
 import { useFormContext } from "react-hook-form";
 import { useParticipants } from "@/hooks";
 import { useEffect, useMemo } from "react";
-import { ParticipantsSkeleton } from "./participants-skeleton";
+import { ParticipantsSkeleton } from "./ParticipantsSkeleton";
 
 interface ExpenseDialogFormProps {
   session_id: string;

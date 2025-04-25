@@ -5,7 +5,7 @@ import { Receipt } from "lucide-react";
 import { Expense } from "@/types/expense";
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { ExpenseForm } from "./expense-form";
+import { ExpenseForm } from "./ExpenseForm";
 import { useCreateExpense } from "@/hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import {
