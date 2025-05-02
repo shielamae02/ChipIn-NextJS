@@ -5,28 +5,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { CreateEventDialog } from "./CreateEventDialog";
+import Image from "next/image";
 
 const EmptyEvents = () => {
   return (
     <Card className='border-dashed'>
-      <CardHeader>
+      <CardContent className='flex flex-col items-center justify-center'>
+        <Image
+          src='/empty-events.svg'
+          alt='Cute Avatar'
+          width={400} 
+          height={400}
+        />
+      </CardContent>
+      <CardHeader className='text-center'>
         <CardTitle>No Events Yet</CardTitle>
         <CardDescription className='text-sm'>
-          Start by adding your first event, like "Dinner" or "Hotel Stay"
+          Start by adding your first event, like &quot;Dinner&quot; or
+          &quot;Hotel Stay&quot;
         </CardDescription>
       </CardHeader>
-      <CardContent className='flex flex-col items-center justify-center py-8'>
-        <div className='rounded-full bg-primary/10 p-3 mb-4'>
-          <Plus className='h-6 w-6 text-primary' />
-        </div>
-        <CreateEventDialog>
-          {/* disable if participants < 2 */}
-          <Button>Add Your First Event</Button>
-        </CreateEventDialog>
-      </CardContent>
     </Card>
   );
 };
