@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { FAQ } from "@/components/landing/FAQ";
 import { Hero } from "@/components/landing/Hero";
 import { Header } from "@/components/landing/Header";
