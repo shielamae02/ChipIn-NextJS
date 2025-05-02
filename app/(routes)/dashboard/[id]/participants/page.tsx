@@ -40,7 +40,7 @@ export default function Page() {
 
         <CreateParticipant participants={participants} />
 
-        <div className='grid gap-2 max-h-64 overflow-y-auto no-scrollbar'>
+        <div className='grid gap-2 max-h-72 overflow-y-auto no-scrollbar'>
           {isLoading ? (
             <ParticipantSkeletonList />
           ) : (
