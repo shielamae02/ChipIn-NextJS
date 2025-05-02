@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { copyToClipboard } from "@/lib/utils";
-import { CreditCard, Link2 } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
 interface ShareQRCodeDialogProps {
@@ -20,7 +20,7 @@ interface ShareQRCodeDialogProps {
 const ShareQRCodeDialog: React.FC<ShareQRCodeDialogProps> = ({
   children,
   url,
-  sessionName
+  sessionName,
 }) => {
   const handleCopy = async () => {
     copyToClipboard(
