@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import DashboardLayout from "./dashboardLayout";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
