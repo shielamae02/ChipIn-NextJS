@@ -8,34 +8,49 @@ import { Features } from "@/components/landing/Features";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { CallToAction } from "@/components/landing/CallToAction";
+import { FadeIn } from "@/components/shared/FadeIn";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col w-full">
+    <div className='flex min-h-screen flex-col w-full'>
       {/* Header */}
       <Header />
 
-      <main className="flex-1">
+      <main className='flex-1'>
         {/* Hero Section */}
-        <Hero />
+        <FadeIn duration={200}>
+          <Hero />
+        </FadeIn>
 
         {/* Features Section */}
-        <Features />
+        <FadeIn duration={400}>
+          <Features />
+        </FadeIn>
 
         {/* How It Works Section */}
-        <HowItWorks />
+        <FadeIn duration={400}>
+          <HowItWorks />
+        </FadeIn>
 
         {/* Testimonials Section */}
-        <Testimonials />
+        <FadeIn duration={400}>
+          <Testimonials />
+        </FadeIn>
 
         {/* CTA Section */}
-        <CallToAction />
+        <FadeIn duration={400}>
+          <CallToAction />
+        </FadeIn>
 
         {/* FAQ Section */}
-        <FAQ />
+        <FadeIn duration={400}>
+          <FAQ />
+        </FadeIn>
 
         {/* Contact Section */}
-        <Contact />
+        <FadeIn duration={400}>
+          <Contact />
+        </FadeIn>
       </main>
 
       {/* Footer */}
