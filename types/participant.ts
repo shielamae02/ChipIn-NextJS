@@ -1,5 +1,5 @@
 export type Participant = {
-  id?: string;
+  id: string;
   name: string;
   balance?: number;
 };
