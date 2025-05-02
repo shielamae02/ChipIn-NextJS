@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CreditCard } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomButton } from "../shared/CustomButton";
 import { useForm } from "react-hook-form";
@@ -22,9 +22,6 @@ import { useCreateParticipant } from "@/hooks";
 const CreateSession = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-
-  const { id } = useParams();
-  const session_id = id as string;
 
   const { createSession } = useCreateSession();
   const { createParticipant } = useCreateParticipant();
