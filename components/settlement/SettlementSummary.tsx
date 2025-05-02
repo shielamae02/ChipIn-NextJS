@@ -83,12 +83,12 @@ export default function SettlementSummary({
     const transactions: Transaction[] = [];
 
     const debtors = Object.entries(balances)
-      .filter(([_, balance]) => balance < 0)
+      .filter(([, balance]) => balance < 0)
       .map(([id, balance]) => ({ id, balance: Math.abs(balance) }))
       .sort((a, b) => b.balance - a.balance);
 
     const creditors = Object.entries(balances)
-      .filter(([_, balance]) => balance > 0)
+      .filter(([, balance]) => balance > 0)
       .map(([id, balance]) => ({ id, balance }))
       .sort((a, b) => b.balance - a.balance);
 
