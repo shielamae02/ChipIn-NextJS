@@ -1,12 +1,12 @@
 import { Event } from "@/types/event";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Receipt } from "lucide-react";
+import { Receipt, Trash2 } from "lucide-react";
 import { Expense } from "@/types/expense";
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { ExpenseForm } from "./ExpenseForm";
-import { useExpense, useUpdateExpense } from "@/hooks";
+import { useDeleteExpense, useExpense, useUpdateExpense } from "@/hooks";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   Drawer,
@@ -18,6 +18,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { ConfirmationDialog } from "../common/ConfirmationDialog";
 
 interface UpdateExpenseDialogProps {
   children: React.ReactNode;
@@ -41,6 +42,7 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
 
   const { expense } = useExpense(expenseId);
   const { updateExpense } = useUpdateExpense(event.id!, expenseId);
+  const { deleteExpense } = useDeleteExpense(session_id as string);
 
   const methods = useForm<Expense>({
     mode: "onChange",
@@ -52,7 +54,7 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
     formState: { isValid },
   } = methods;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Expense) => {
     setIsLoading(true);
     try {
       if (!session_id) {
@@ -60,7 +62,7 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
       }
 
       const paidByArray = Object.entries(paidBy)
-        .filter(([_, amount]) => amount! > 0)
+        .filter(([, amount]) => amount! > 0)
         .map(([participant_id, amount]) => ({
           participant_id,
           amount,
@@ -78,14 +80,12 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
 
       const expensePayload = {
         ...data,
-        event_id: event.id,
-        amount: parseFloat(data.amount),
+        event_id: event.id!,
+        amount: data.amount,
         paidBy: paidByArray,
         splitAmong,
         date: new Date().toISOString(),
       };
-
-      console.log("Expense Payload:", expensePayload);
 
       await updateExpense(expensePayload);
 
@@ -108,14 +108,30 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className='flex flex-col flex-1 overflow-hidden'
+            className='flex flex-col flex-1 overflow-hidden max-w-6xl  w-full mx-auto'
           >
             <DrawerHeader>
-              <div className='flex items-center gap-2 mb-2'>
-                <div className='flex h-8 w-8 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800'>
-                  <Receipt className='h-4 w-4 text-zinc-900 dark:text-zinc-100' />
+              <div className='flex items-center gap-2 mb-2 justify-between'>
+                <div className='flex items-center gap-2'>
+                  <div className='flex size-8 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800'>
+                    <Receipt className='size-4 text-zinc-900 dark:text-zinc-100' />
+                  </div>
+                  <DrawerTitle>Update {expense?.description} </DrawerTitle>
                 </div>
-                <DrawerTitle>Update {expense?.description} </DrawerTitle>
+                <ConfirmationDialog
+                  title='Delete Expense'
+                  description={`Are you sure you want to delete ${expense?.description} expense?`}
+                  onClick={() =>
+                    expense?.id && deleteExpense({ id: expense.id })
+                  }
+                  actionText='Delete'
+                  variant='destructive'
+                >
+                  <Button className='bg-red-50 mr-5 text-red-600 border-red-100 hover:bg-red-100 hover:text-red-600 '>
+                    <Trash2 className='size-4' />
+                    Delete Expense
+                  </Button>
+                </ConfirmationDialog>
               </div>
               <DrawerDescription>
                 Edit the expense details and who paid for it.
