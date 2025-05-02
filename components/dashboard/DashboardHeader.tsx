@@ -1,14 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useSessionStore } from "@/store/sessionStore";
-import { Copy, ScanQrCode } from "lucide-react";
-import Link from "next/link";
+import { Copy, LogOut, ScanQrCode } from "lucide-react";
 import { ShareQRCodeDialog } from "./ShareQRCodeDialog";
 import { ShareSessionDialog } from "./ShareSessionDialog";
 import { Skeleton } from "../ui/skeleton";
+import { ConfirmationDialog } from "../common/ConfirmationDialog";
 
 const DashboardHeader = () => {
   const session = useSessionStore((state) => state.session);
+  const clearSession = useSessionStore((state) => state.clearSession);
 
   const url = session
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/${session.id}/events`
@@ -28,14 +29,23 @@ const DashboardHeader = () => {
   }
 
   return (
-    <header className='sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 bg'>
-      <div className='py-10 flex h-16 items-center'>
-        {/* insert confirmation modal to go back to the home page */}
-        <Link href='/'>
+    <header className='sticky top-0 z-10 bg-background/95 backdrop-blur w-full supports-[backdrop-filter]:bg-background/60'>
+      <div className='py-10 flex h-16 items-center mx-auto px-4 sm:px-6 max-w-6xl'>
+        <ConfirmationDialog
+          title='Exit Session'
+          description={`Are you sure you want to exit? This will end your current session, and you'll need to rejoin using the shared session ID. Do you want to continue?`}
+          onClick={() => {
+            clearSession();
+            localStorage.removeItem("chipin-session");
+          }}
+          actionText='Exit Session'
+          variant='destructive'
+        >
           <h1 className='text-xl font-medium'>
             Chip<span className='font-bold'>In</span>
           </h1>
-        </Link>
+        </ConfirmationDialog>
+
         <div className='ml-auto flex gap-2'>
           <ShareQRCodeDialog url={url} sessionName={session.name}>
             <Button variant='outline' size='sm'>
@@ -49,6 +59,24 @@ const DashboardHeader = () => {
               <p className='hidden sm:block'>Share Session ID</p>
             </Button>
           </ShareSessionDialog>
+
+          <ConfirmationDialog
+            title='Exit Session'
+            description={`Are you sure you want to exit? This will end your current session, and you'll need to rejoin using the shared session ID. Do you want to continue?`}
+            onClick={() => {
+              clearSession();
+              localStorage.removeItem("chipin-session");
+            }}
+            actionText='Exit Session'
+            variant='destructive'
+          >
+            <Button
+              size='sm'
+              className='bg-red-500 text-white hover:bg-red-400'
+            >
+              <LogOut />
+            </Button>
+          </ConfirmationDialog>
         </div>
       </div>
     </header>
