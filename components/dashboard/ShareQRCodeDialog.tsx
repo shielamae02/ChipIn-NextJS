@@ -14,11 +14,13 @@ import { QRCodeSVG } from "qrcode.react";
 interface ShareQRCodeDialogProps {
   children: React.ReactNode;
   url: string;
+  sessionName: string;
 }
 
 const ShareQRCodeDialog: React.FC<ShareQRCodeDialogProps> = ({
   children,
   url,
+  sessionName
 }) => {
   const handleCopy = async () => {
     copyToClipboard(
@@ -38,7 +40,7 @@ const ShareQRCodeDialog: React.FC<ShareQRCodeDialogProps> = ({
               <CreditCard className='h-5 w-5 text-primary' />
             </div>
           </div>
-          <DialogTitle className='text-xl'>SessionName</DialogTitle>
+          <DialogTitle className='text-xl'>{sessionName}</DialogTitle>
           <DialogDescription className='text-center text-sm'>
             Share the QR code, gather your crew, and keep your group spending on
             track!
@@ -60,7 +62,6 @@ const ShareQRCodeDialog: React.FC<ShareQRCodeDialogProps> = ({
             onClick={handleCopy}
             className='w-full hover:cursor-pointer hover:bg-zinc-100 p-2 rounded-md flex items-start text-xs text-muted-foreground whitespace-normal break-words text-center'
           >
-            <Link2 className='size-3.5 mr-0.5 shrink-0 mt-0.5' />
             {url}
           </button>
         </DialogFooter>
