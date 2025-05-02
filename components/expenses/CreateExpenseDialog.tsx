@@ -92,12 +92,12 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className='flex flex-col flex-1 overflow-hidden'
+            className='flex flex-col flex-1 overflow-hidden mx-auto w-full max-w-6xl'
           >
             <DrawerHeader>
               <div className='flex items-center gap-2 mb-2'>
-                <div className='flex h-8 w-8 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800'>
-                  <Receipt className='h-4 w-4 text-zinc-900 dark:text-zinc-100' />
+                <div className='flex size-8 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800'>
+                  <Receipt className='size-4 text-zinc-900 dark:text-zinc-100' />
                 </div>
                 <DrawerTitle>Add Expense to {event.name}</DrawerTitle>
               </div>
@@ -118,7 +118,12 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
             <DrawerFooter className='border-t mt-auto'>
               <Button
                 type='submit'
-                disabled={!isValid || isLoading || isAmountMismatch}
+                disabled={
+                  !isValid ||
+                  isLoading ||
+                  isAmountMismatch ||
+                  splitAmong.length === 0
+                }
               >
                 {isLoading ? "Saving..." : "Create Expense"}
               </Button>
