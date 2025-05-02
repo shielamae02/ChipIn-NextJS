@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const expenseId = params.id;
+  const expenseId = context.params.id;
 
   const { data, error } = await supabase
     .from("expenses")
@@ -36,10 +36,10 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   const body = await request.json();
-  const expenseId = params.id;
+  const expenseId = context.params.id;
 
   const {
     expense_id = expenseId,
