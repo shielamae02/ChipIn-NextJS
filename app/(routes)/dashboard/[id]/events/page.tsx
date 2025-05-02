@@ -31,14 +31,6 @@ export default function Page() {
                 <EventCard {...event} key={event.id} />
               ))}
             </div>
-            <CreateEventDialog>
-              <Button
-                size='lg'
-                className='fixed bottom-6 h-14 text-sm right-5 bg-zinc-800 hover:bg-zinc-900 text-white rounded-full shadow-lg transition duration-300 cursor-pointer'
-              >
-                + Add Event
-              </Button>
-            </CreateEventDialog>
           </>
         )}
       </section>
