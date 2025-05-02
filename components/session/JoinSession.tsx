@@ -16,7 +16,7 @@ import { CustomButton } from "../shared/CustomButton";
 import { useForm } from "react-hook-form";
 import { Session } from "@/types/session";
 import { toast } from "sonner";
-import { useCreateParticipant, useCreateSession, useSession } from "@/hooks";
+import { useCreateParticipant } from "@/hooks";
 import { useSessionStore } from "@/store/sessionStore";
 import { useSearchParams } from "next/navigation";
 
