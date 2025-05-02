@@ -47,7 +47,7 @@ const UpdateParticipantDialog: React.FC<UpdateParticipantDialogProps> = ({
       });
       setIsModalOpen(false);
     } catch (err) {
-      console.error("Error adding participant:", err);
+      console.error("Error updating participant:", err);
     } finally {
       setIsLoading(false);
     }
