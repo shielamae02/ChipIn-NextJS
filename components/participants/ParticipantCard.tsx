@@ -7,6 +7,7 @@ import { useSessionStore } from "@/store/sessionStore";
 import { ConfirmationDialog } from "@/components/common/ConfirmationDialog";
 import { useDeleteParticipant } from "@/hooks";
 import { UpdateParticipantDialog } from "@/components/participants/UpdateParticipantDialog";
+import { Badge } from "../ui/badge";
 
 interface ParticipantCardProps {
   participant: Participant;
@@ -36,6 +37,11 @@ const ParticipantCard = ({
           />
         </div>
         <span className='font-medium'>{participant.name}</span>
+        {session?.creator === participant.name && (
+          <Badge className='bg-sky-50 text-xs border-sky-200 text-sky-700'>
+            Organizer
+          </Badge>
+        )}
       </div>
       <div className='flex gap-1'>
         <UpdateParticipantDialog
@@ -47,7 +53,6 @@ const ParticipantCard = ({
             variant='ghost'
             size='icon'
             className='size-8 text-zinc-500 hover:text-amber-600'
-            disabled={session?.creator === participant.name}
           >
             <Pencil className='size-4' />
           </Button>
@@ -61,6 +66,7 @@ const ParticipantCard = ({
             participant.id && (await deleteParticipant({ id: participant.id }))
           }
           actionText='Delete'
+          variant='destructive'
         >
           <Button
             variant='ghost'
