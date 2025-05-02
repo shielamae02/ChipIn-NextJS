@@ -8,8 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { copyToClipboard } from "@/lib/utils";
-import { CreditCard, Link2 } from "lucide-react";
-import { toast } from "sonner";
+import { CreditCard } from "lucide-react";
 import { Session } from "@/types/session";
 
 interface ShareSessionDialogProps {
@@ -21,7 +20,7 @@ const ShareSessionDialog: React.FC<ShareSessionDialogProps> = ({
   children,
   session,
 }) => {
-  const url = session ? `${process.env.NEXT_PUBLIC_BASE_URL}/join` : "";
+  const url = "chipin-io.vercel.app/join";
 
   const handleCopy = async () => {
     copyToClipboard(
