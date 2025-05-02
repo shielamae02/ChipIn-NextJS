@@ -1,11 +1,117 @@
 import { supabase } from "@/lib/supabase/supabaseClient";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const expenseId = (await params).id;
+
+  if (!expenseId) {
+    return NextResponse.json({ error: "Missing expense ID" }, { status: 400 });
+  }
+
+  // 1) Load expense amount & event_id
+  const { data: exp, error: expErr } = await supabase
+    .from("expenses")
+    .select("amount, event_id")
+    .eq("id", expenseId)
+    .single();
+  if (expErr || !exp) {
+    return NextResponse.json(
+      { error: expErr?.message ?? "Expense not found" },
+      { status: 404 }
+    );
+  }
+
+  // 2) Load related paid_by & split_among entries
+  const { data: paidRows = [], error: paidErr } = await supabase
+    .from("expense_paid_by")
+    .select("participant_id, amount")
+    .eq("expense_id", expenseId);
+  if (paidErr) {
+    console.warn("Could not fetch paid_by rows:", paidErr);
+  }
+
+  const { data: splitRows = [], error: splitErr } = await supabase
+    .from("expense_split_among")
+    .select("participant_id")
+    .eq("expense_id", expenseId);
+  if (splitErr) {
+    console.warn("Could not fetch split_among rows:", splitErr);
+  }
+
+  // 3) Delete child-table rows
+  await supabase.from("expense_paid_by").delete().eq("expense_id", expenseId);
+  await supabase
+    .from("expense_split_among")
+    .delete()
+    .eq("expense_id", expenseId);
+
+  // 4) Delete the expense itself
+  const { error: delErr } = await supabase
+    .from("expenses")
+    .delete()
+    .eq("id", expenseId);
+  if (delErr) {
+    return NextResponse.json({ error: delErr.message }, { status: 400 });
+  }
+
+  // 5) Update event.total_amount
+  const { data: ev, error: evErr } = await supabase
+    .from("events")
+    .select("total_amount")
+    .eq("id", exp.event_id)
+    .single();
+  if (!evErr && ev) {
+    const newTotal = (ev.total_amount ?? 0) - exp.amount;
+    await supabase
+      .from("events")
+      .update({ total_amount: newTotal })
+      .eq("id", exp.event_id);
+  }
+
+  // 6a) Revert payers’ balances
+  for (const { participant_id, amount } of paidRows || []) {
+    const { data: p, error: pErr } = await supabase
+      .from("participants")
+      .select("balance")
+      .eq("id", participant_id)
+      .single();
+    if (!pErr && p) {
+      await supabase
+        .from("participants")
+        .update({ balance: (p.balance ?? 0) - amount })
+        .eq("id", participant_id);
+    }
+  }
+
+  // 6b) Revert split‐among balances
+  const share = splitRows?.length ? exp.amount / splitRows.length : 0;
+  for (const { participant_id } of splitRows || []) {
+    const { data: p, error: pErr } = await supabase
+      .from("participants")
+      .select("balance")
+      .eq("id", participant_id)
+      .single();
+    if (!pErr && p) {
+      await supabase
+        .from("participants")
+        .update({ balance: (p.balance ?? 0) + share })
+        .eq("id", participant_id);
+    }
+  }
+
+  return NextResponse.json({
+    message: "Expense deleted and balances reconciled",
+  });
+}
 
 export async function GET(
-  request: Request,
-  context: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const expenseId = context.params.id;
+  const expenseId = (await params).id;
 
   const { data, error } = await supabase
     .from("expenses")
@@ -35,11 +141,11 @@ export async function GET(
 }
 
 export async function PUT(
-  request: Request,
-  context: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const body = await request.json();
-  const expenseId = context.params.id;
+  const expenseId = (await params).id;
 
   const {
     expense_id = expenseId,
@@ -140,6 +246,7 @@ export async function PUT(
   // (delta = amount paid - oldShare; if participant did not pay, treated as 0)
   const oldDeltaMap: Record<string, number> = {};
   for (const participant_id of originalSplitResult.data.map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (r: any) => r.participant_id
   )) {
     const paid = oldPaidMap[participant_id] || 0;
@@ -272,7 +379,8 @@ export async function PUT(
     );
   }
   const totalEventAmount = totalSumResult.data.reduce(
-    (sum: number, expense: any) => sum + (expense.amount || 0),
+    (sum: number, expense: { amount: number | null }) =>
+      sum + (expense.amount || 0),
     0
   );
   const updateEvent = await supabase
