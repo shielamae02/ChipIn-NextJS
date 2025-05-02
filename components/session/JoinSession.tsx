@@ -13,7 +13,7 @@ import { CreditCard } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomButton } from "../shared/CustomButton";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Session } from "@/types/session";
 import { toast } from "sonner";
 import { useCreateParticipant } from "@/hooks";
@@ -29,11 +29,10 @@ const JoinSession = () => {
     register,
     handleSubmit,
     reset,
-    control,
     formState: { errors },
   } = useForm<Session>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Session) => {
     setIsLoading(true);
 
     try {
