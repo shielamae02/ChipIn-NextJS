@@ -11,21 +11,23 @@ interface ItemProps {
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
-      <div className=" flex h-16 items-center justify-between mx-auto container">
-        <div className="flex items-center gap-2 font-bold text-xl">
+    <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4'>
+      <div className=' flex h-16 items-center justify-between mx-auto max-w-6xl'>
+        <div className='flex items-center gap-2 font-bold text-xl'>
           <HandCoins />
-          <Link href="/" className="text-primary">
+          <Link href='/' className='text-primary'>
             ChipIn
           </Link>
         </div>
-        <nav className="hidden md:flex gap-8">
+        <nav className='hidden md:flex gap-8'>
           {NavData.map((item, index) => (
             <Item key={index} title={item.title} path={item.path} />
           ))}
         </nav>
-        <div className="flex items-center gap-4">
-          <Button>Get Started</Button>
+        <div className='flex items-center gap-4'>
+          <Link href='/create'>
+            <Button>Get Started</Button>
+          </Link>
         </div>
       </div>
     </header>
@@ -37,7 +39,7 @@ export { Header };
 const Item: React.FC<ItemProps> = ({ title, path }) => (
   <a
     href={path}
-    className="text-sm font-medium hover:text-primary transition-colors"
+    className='text-sm font-medium hover:text-primary transition-colors'
   >
     {title}
   </a>
