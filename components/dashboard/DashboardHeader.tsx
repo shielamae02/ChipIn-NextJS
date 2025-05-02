@@ -31,11 +31,6 @@ const DashboardHeader = () => {
     <header className='sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 bg'>
       <div className='py-10 flex h-16 items-center'>
         {/* insert confirmation modal to go back to the home page */}
-        {/* <Button variant='ghost' size='icon' asChild>
-          <Link href='/'>
-            <ArrowLeft className='size-5' />
-          </Link>
-        </Button> */}
         <Link href='/'>
           <h1 className='text-xl font-medium'>
             Chip<span className='font-bold'>In</span>
