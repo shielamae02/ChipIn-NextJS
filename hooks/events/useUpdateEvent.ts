@@ -13,7 +13,7 @@ const updateEventRequest = async ({ values }: { values: Event }) => {
   const response = await result.json();
 
   if (!result.ok) {
-    throw new Error("Failed to update participant");
+    throw new Error("Failed to update event");
   }
 
   return response;
@@ -27,6 +27,8 @@ const useUpdateEvent = (event_id: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["event", event_id] });
       queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      queryClient.invalidateQueries({ queryKey: ["participants"] });
       toast.success("Successfully updated the event name.");
     },
     onError: (err: any) => {
