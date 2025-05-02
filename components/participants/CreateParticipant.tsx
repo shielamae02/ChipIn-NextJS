@@ -54,11 +54,11 @@ const CreateParticipant = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`flex gap-2 mb-6 ${
+      className={`flex flex-col items-start gap-2 mb-6 ${
         errors.name ? "items-center" : "items-end"
       }`}
     >
-      <div className='flex flex-col gap-2 w-full'>
+      <div className='flex gap-2 w-full'>
         <Input
           id='name'
           placeholder='Add Participant Name'
@@ -73,18 +73,18 @@ const CreateParticipant = ({
           })}
           className='h-10 w-full'
         />
-        {errors.name && (
-          <p className='text-xs text-red-400'>{errors.name.message}</p>
-        )}
+        <Button
+          type='submit'
+          disabled={isLoading || !isValid}
+          className='h-10 shrink-0'
+        >
+          <Plus className='size-4' />
+          Add
+        </Button>
       </div>
-      <Button
-        type='submit'
-        disabled={isLoading || !isValid}
-        className='h-10 shrink-0'
-      >
-        <Plus className='size-4' />
-        Add
-      </Button>
+      {errors.name && (
+        <p className='text-xs text-red-400'>{errors.name.message}</p>
+      )}
     </form>
   );
 };
