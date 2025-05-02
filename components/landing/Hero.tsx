@@ -1,9 +1,6 @@
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { ScrollOnView } from "../shared/ScrollOnView";
-import { FadeIn } from "../shared/FadeIn";
 
 const Hero = () => {
   return (
@@ -38,15 +35,6 @@ const Hero = () => {
               </Link>
             </div>
           </div>
-          {/* <div className='hidden lg:block ml-3'>
-            <Image
-              src='/placeholder.svg?height=550&width=450'
-              alt='ChipIn App Screenshot'
-              className='rounded-lg border shadow-xl object-cover'
-              width={500}
-              height={500}
-            />
-          </div> */}
         </div>
       </div>
     </section>
