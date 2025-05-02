@@ -1,7 +1,6 @@
 "use client";
 
 import { Users } from "lucide-react";
-import { useParams } from "next/navigation";
 import { useParticipants } from "@/hooks";
 import { ParticipantCard } from "@/components/participants/ParticipantCard";
 import { CreateParticipant } from "@/components/participants/CreateParticipant";
