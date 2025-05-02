@@ -47,7 +47,7 @@ const ExpenseForm: React.FC<ExpenseDialogFormProps> = ({
   useEffect(() => {
     if (initialData) {
       setValue("description", initialData.description);
-      setValue("amount", initialData.amount.toString());
+      setValue("amount", initialData.amount);
 
       const paidByMap = (initialData || []).expense_paid_by.reduce(
         (acc, curr) => {
@@ -169,13 +169,16 @@ const ExpenseForm: React.FC<ExpenseDialogFormProps> = ({
               min='0.00'
               placeholder='0.00'
               className='h-10'
-              {...register("amount", { required: "Amount is required." })}
+              {...register("amount", {
+                required: "Amount is required.",
+                valueAsNumber: true,
+              })}
             />
           </FormField>
 
           {/* Paid By */}
-          <div className='grid gap-2 p-3 border rounded-md bg-zinc-50 dark:bg-zinc-900 max-h-[200px] overflow-y-auto'>
-            <div className='flex items-center justify-between'>
+          <div className='grid gap-2'>
+            <div className='flex items-end justify-between'>
               <Label>Paid by</Label>
               <Button
                 type='button'
@@ -187,41 +190,44 @@ const ExpenseForm: React.FC<ExpenseDialogFormProps> = ({
                 {areAllPaidBySelected ? "Unselect All" : "Select All"}
               </Button>
             </div>
-            {isLoading ? (
-              <ParticipantsSkeleton />
-            ) : (
-              participants.map((p) => (
-                <PaidBy
-                  key={p.id}
-                  participant={p}
-                  isChecked={isParticipantChecked(p.id!)}
-                  value={paidBy[p.id!] ?? ""}
-                  onCheckboxChange={(checked) => togglePaidBy(checked, p)}
-                  onAmountChange={(value: string) =>
-                    setPaidBy((prev) => ({
-                      ...prev,
-                      [p.id!]: value === "" ? null : parseFloat(value),
-                    }))
-                  }
-                />
-              ))
+
+            <div className='grid gap-2 p-3 border rounded-md bg-zinc-50 dark:bg-zinc-900 max-h-[200px] overflow-y-auto'>
+              {isLoading ? (
+                <ParticipantsSkeleton />
+              ) : (
+                participants.map((p) => (
+                  <PaidBy
+                    key={p.id}
+                    participant={p}
+                    isChecked={isParticipantChecked(p.id!)}
+                    value={paidBy[p.id!] ?? ""}
+                    onCheckboxChange={(checked) => togglePaidBy(checked, p)}
+                    onAmountChange={(value: string) =>
+                      setPaidBy((prev) => ({
+                        ...prev,
+                        [p.id!]: value === "" ? null : parseFloat(value),
+                      }))
+                    }
+                  />
+                ))
+              )}
+            </div>
+            {Object.keys(paidBy).length === 0 && (
+              <p className='text-xs text-destructive mt-1'>
+                Select at least one participant who paid
+              </p>
+            )}
+            {isAmountMismatch && (
+              <p className='text-xs text-destructive mt-1'>
+                Total paid (${totalPaid}) does not match the total amount ( $
+                {amountValue})
+              </p>
             )}
           </div>
-          {Object.keys(paidBy).length === 0 && (
-            <p className='text-xs text-destructive mt-1'>
-              Select at least one participant who paid
-            </p>
-          )}
-          {isAmountMismatch && (
-            <p className='text-xs text-destructive mt-1'>
-              Total paid (${totalPaid}) does not match the total amount ( $
-              {amountValue})
-            </p>
-          )}
 
           {/* Split Among */}
           <div className='grid gap-2'>
-            <div className='flex items-center justify-between'>
+            <div className='flex items-end justify-between'>
               <Label>Split among</Label>
               <Button
                 type='button'
