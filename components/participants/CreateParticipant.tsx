@@ -35,7 +35,7 @@ const CreateParticipant = ({
     try {
       if (session_id) {
         await createParticipant({
-          values: { name: data.name },
+          values: { name: data.name, id: "" },
           session_id: session_id,
         });
       } else {
@@ -80,10 +80,10 @@ const CreateParticipant = ({
       <Button
         type='submit'
         disabled={isLoading || !isValid}
-        size='icon'
-        className='size-10 shrink-0'
+        className='h-10 shrink-0'
       >
         <Plus className='size-4' />
+        Add
       </Button>
     </form>
   );
