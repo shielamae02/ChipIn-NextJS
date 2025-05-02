@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
-import useUpdateEvent from "@/hooks/events/useUpdateEvent";
+import { useUpdateEvent } from "@/hooks";
 import { Event } from "@/types/event";
 import { Input } from "../ui/input";
 
