@@ -49,13 +49,18 @@ const ExpenseForm: React.FC<ExpenseDialogFormProps> = ({
       setValue("description", initialData.description);
       setValue("amount", initialData.amount.toString());
 
-      const paidByMap = (initialData || []).paidBy.reduce((acc, curr) => {
-        acc[curr.participant_id] = curr.amount;
-        return acc;
-      }, {} as Record<string, number | null>);
+      const paidByMap = (initialData || []).expense_paid_by.reduce(
+        (acc, curr) => {
+          acc[curr.participant_id] = curr.amount;
+          return acc;
+        },
+        {} as Record<string, number | null>
+      );
       setPaidBy(paidByMap);
 
-      setSplitAmong(initialData.splitAmong);
+      setSplitAmong(
+        initialData.expense_split_among.map((item) => item.participant_id)
+      );
     }
   }, [initialData, setPaidBy, setSplitAmong, setValue]);
 
