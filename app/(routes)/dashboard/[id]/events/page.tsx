@@ -5,6 +5,7 @@ import { useEvents } from "@/hooks";
 import { useParams } from "next/navigation";
 import { EmptyEvents } from "@/components/events/EmptyEventsCard";
 import { EventCardSkeleton } from "@/components/events/EventsCardSkeleton";
+import { ParticipantsWarningCard } from "@/components/participants/ParticipantsWarningCard";
 
 export default function Page() {
   const { id } = useParams();
@@ -21,7 +22,10 @@ export default function Page() {
             ))}
           </div>
         ) : events.length === 0 ? (
-          <EmptyEvents />
+          <>
+            <ParticipantsWarningCard />
+            <EmptyEvents />
+          </>
         ) : (
           <>
             <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
