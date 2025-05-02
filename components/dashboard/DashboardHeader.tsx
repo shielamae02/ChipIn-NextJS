@@ -11,9 +11,6 @@ const DashboardHeader = () => {
   const session = useSessionStore((state) => state.session);
   const clearSession = useSessionStore((state) => state.clearSession);
 
-  const url = session
-    ? `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/${session.id}/events`
-    : "";
 
   if (!session) {
     return (
@@ -47,7 +44,7 @@ const DashboardHeader = () => {
         </ConfirmationDialog>
 
         <div className='ml-auto flex gap-2'>
-          <ShareQRCodeDialog url={url} sessionName={session.name}>
+          <ShareQRCodeDialog  sessionName={session.name}>
             <Button variant='outline' size='sm'>
               <ScanQrCode className='mr-0 sm:mr-1 size-4' />
               <p className='hidden sm:block'>Show QR Code</p>
