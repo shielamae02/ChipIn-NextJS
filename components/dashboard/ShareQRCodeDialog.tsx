@@ -8,20 +8,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { copyToClipboard } from "@/lib/utils";
+import { useSessionStore } from "@/store/sessionStore";
 import { CreditCard } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
 interface ShareQRCodeDialogProps {
   children: React.ReactNode;
-  url: string;
   sessionName: string;
 }
 
 const ShareQRCodeDialog: React.FC<ShareQRCodeDialogProps> = ({
   children,
-  url,
   sessionName,
 }) => {
+  const session = useSessionStore((state) => state.session);
+
+  const url = session
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/join?id=${session.id}`
+    : "";
+
   const handleCopy = async () => {
     copyToClipboard(
       url,
