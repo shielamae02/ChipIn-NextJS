@@ -23,7 +23,7 @@ const createExpenseRequest = async (values: Expense) => {
 
 const useCreateExpense = (event_id: string) => {
   const queryClient = useQueryClient();
-  const { session, hasHydrated } = useSessionStore();
+  const { session } = useSessionStore();
 
   const { mutateAsync: createExpense } = useMutation({
     mutationFn: async (expense: Omit<Expense, "event_id">) =>
@@ -31,6 +31,9 @@ const useCreateExpense = (event_id: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["expenses", event_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["eventBalances", event_id],
       });
       if (session) {
         queryClient.invalidateQueries({
