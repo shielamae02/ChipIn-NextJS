@@ -49,7 +49,7 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
     formState: { isValid },
   } = methods;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Omit<Expense, "event_id">) => {
     setIsLoading(true);
     try {
       if (!session_id) {
@@ -57,7 +57,7 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
       }
 
       const paidByArray = Object.entries(paidBy)
-        .filter(([_, amount]) => amount! > 0)
+        .filter(([, amount]) => amount! > 0)
         .map(([participant_id, amount]) => ({
           participant_id,
           amount,
@@ -65,7 +65,8 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
 
       const expensePayload = {
         ...data,
-        amount: parseFloat(data.amount),
+        event_id: event.id!,
+        amount: data.amount,
         paidBy: paidByArray,
         splitAmong,
         date: new Date().toISOString(),
