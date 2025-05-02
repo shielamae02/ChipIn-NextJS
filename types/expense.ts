@@ -4,9 +4,11 @@ export type Expense = {
   description: string;
   amount: number;
   created_at?: string;
-  paidBy: {
+  expense_paid_by: {
     participant_id: string;
     amount: number;
   }[];
-  splitAmong: string[];
+  expense_split_among: {
+    participant_id: string;
+  }[];
 };
