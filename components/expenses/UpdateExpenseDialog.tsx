@@ -42,7 +42,7 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
 
   const { expense } = useExpense(expenseId);
   const { updateExpense } = useUpdateExpense(event.id!, expenseId);
-  const { deleteExpense } = useDeleteExpense(session_id as string);
+  const { deleteExpense } = useDeleteExpense(session_id as string, event.id!);
 
   const methods = useForm<Expense>({
     mode: "onChange",
