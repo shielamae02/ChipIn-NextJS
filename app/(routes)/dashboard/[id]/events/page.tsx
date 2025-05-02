@@ -5,8 +5,6 @@ import { useEvents } from "@/hooks";
 import { useParams } from "next/navigation";
 import { EmptyEvents } from "@/components/events/EmptyEventsCard";
 import { EventCardSkeleton } from "@/components/events/EventsCardSkeleton";
-import { Button } from "@/components/ui/button";
-import { CreateEventDialog } from "@/components/events/CreateEventDialog";
 
 export default function Page() {
   const { id } = useParams();
