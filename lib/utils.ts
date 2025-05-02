@@ -54,6 +54,7 @@ export const copyToClipboard = async (
     await navigator.clipboard.writeText(text);
     toast.success(successMessage);
   } catch (err) {
+    console.error(err);
     toast.error(errorMessage);
   }
 };
