@@ -15,42 +15,57 @@ import { useState } from "react";
 import { CustomButton } from "../shared/CustomButton";
 import { useForm } from "react-hook-form";
 import { Session } from "@/types/session";
-import { useSessionStore } from "@/store/sessionStore";
+import { toast } from "sonner";
+import { useCreateParticipant } from "@/hooks";
+import { Participant } from "@/types/participant";
 
-const CreateSession = () => {
+const JoinSession = () => {
   const router = useRouter();
-  const { setSessionId } = useSessionStore();
-
   const [isLoading, setIsLoading] = useState(false);
+
+  const { createParticipant } = useCreateParticipant();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Session>();
 
   const onSubmit = async (data: Session) => {
-    const { name, creator } = data;
     setIsLoading(true);
 
     try {
-      const res = await fetch("/api/sessions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, creator }),
+      const response = await fetch(`/api/participants?session_id=${data.id}`);
+      const result = await response.json();
+      const participants: Participant[] = Array.isArray(result) ? result : [];
+
+      const trimmed = data.name.trim().toLowerCase();
+      const nameAlreadyExists = participants.some(
+        (p) => p.name.trim().toLowerCase() === trimmed
+      );
+
+      const finalName = nameAlreadyExists ? `${trimmed} (2)` : trimmed;
+
+      await createParticipant({
+        values: {
+          name: finalName,
+          id: data.id,
+        },
+        session_id: data.id,
       });
 
-      const result = await res.json();
+      toast.success("Successfully joined the session!");
 
-      if (res.ok) {
-        setSessionId(result.id);
-        router.push(`/dashboard/${result.id}`);
-      } else {
-        alert(result.error || "Failed to create session.");
+      if (nameAlreadyExists) {
+        toast.success("Please update your name to a unique one.");
       }
+
+      router.push(`/dashboard/${data.id}/participants`);
+      reset();
     } catch (err) {
       console.error("Error creating session:", err);
-      alert("Something went wrong!");
+      toast.error("Something went wrong.");
     } finally {
       setIsLoading(false);
     }
@@ -65,37 +80,42 @@ const CreateSession = () => {
           </div>
         </div>
         <CardTitle className='text-2xl leading-tight font-semibold'>
-          Create a New Session
+          Join a Session
         </CardTitle>
         <CardDescription>
-          Start a new expense splitting session for your group
+          Enter the session ID and your name to join an existing expense
+          splitting session
         </CardDescription>
       </CardHeader>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent className='space-y-4 pt-2'>
           <div className='space-y-2'>
-            <Label htmlFor='session-name'>Session Name</Label>
+            <Label htmlFor='id'>Session ID</Label>
             <Input
-              id='name'
-              placeholder='e.g., Summer Trip 2025'
-              {...register("name", { required: true })}
+              id='id'
+              placeholder='Enter the session ID'
+              {...register("id", { required: true })}
               className='h-11'
             />
-            {errors.name && (
-              <p className='text-xs text-red-400'>Session name is required.</p>
+            {errors.id && (
+              <p className='text-xs text-red-400'>Session ID is required.</p>
             )}
           </div>
           <div className='space-y-2'>
-            <Label htmlFor='your-name'>Your Name</Label>
+            <Label htmlFor='name'>Your Name</Label>
             <Input
-              id='creator'
+              id='name'
               placeholder='Enter your name'
-              {...register("creator", { required: true })}
+              {...register("name", {
+                required: "Participant name is required.",
+              })}
               className='h-11'
             />
-            {errors.creator && (
-              <p className='text-xs text-red-400'>Your name is required.</p>
+            {errors.name && (
+              <p className='text-xs text-red-400'>
+                {errors.name.message || "Your name is required."}
+              </p>
             )}
           </div>
         </CardContent>
@@ -103,8 +123,8 @@ const CreateSession = () => {
           <CustomButton
             type='submit'
             isLoading={isLoading}
-            buttonText='Create Session'
-            buttonLoadingText='Creating Session...'
+            buttonText='Join Session'
+            buttonLoadingText='Joining Session...'
             disabled={isLoading}
           />
         </CardFooter>
@@ -113,4 +133,4 @@ const CreateSession = () => {
   );
 };
 
-export default CreateSession;
+export default JoinSession;

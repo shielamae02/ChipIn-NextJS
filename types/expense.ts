@@ -1,8 +1,14 @@
-import { Participant } from "./participant";
-
 export type Expense = {
+  id?: string;
+  event_id: string;
   description: string;
   amount: number;
-  paidBy: Participant[];
-  splitAmong: Participant[];
+  created_at?: string;
+  expense_paid_by: {
+    participant_id: string;
+    amount: number;
+  }[];
+  expense_split_among: {
+    participant_id: string;
+  }[];
 };
