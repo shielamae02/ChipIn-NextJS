@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UpdateExpenseDialog } from "../expenses/UpdateExpenseDialog";
 import { CreateExpenseDialog } from "../expenses/CreateExpenseDialog";
-import { Plus, Receipt, Clock } from "lucide-react";
+import { Plus, Receipt, Clock, Pencil } from "lucide-react";
 import { formatCurrency, formatTime } from "@/lib/utils";
 import { useExpenses, useParticipants } from "@/hooks";
 import {
@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { UpdateEventDialog } from "./UpdateEventDialog";
 
 const EventCard = (event: Event) => {
   const { id } = useParams();
@@ -38,7 +39,7 @@ const EventCard = (event: Event) => {
             <CardTitle className='text-xl'>{event.name}</CardTitle>
           </div>
           {expenses.length > 0 && (
-            <span className='text-sm font-medium text-muted-foreground rounded-full bg-zinc-100 dark:bg-zinc-800 px-2 py-1'>
+            <span className='text-xs sm:text-sm font-medium text-muted-foreground rounded-full bg-zinc-100 dark:bg-zinc-800 px-2 py-1'>
               {expenses.length} expense
               {expenses.length !== 1 ? "s" : ""}
             </span>
@@ -130,13 +131,19 @@ const EventCard = (event: Event) => {
         )}
       </CardContent>
       <CardFooter>
-        <div className='w-full'>
+        <div className='w-full space-y-2'>
           <CreateExpenseDialog event={event}>
-            <Button variant='outline' className='w-full'>
-              <Plus className='mr-2 h-4 w-4' />
+            <Button className='w-full flex items-center'>
+              <Plus className='size-4' />
               Add Expense
             </Button>
           </CreateExpenseDialog>
+          <UpdateEventDialog event={event}>
+            <Button variant='outline' className='w-full'>
+              <Pencil className='size-4' />
+              Update Event Name
+            </Button>
+          </UpdateEventDialog>
         </div>
       </CardFooter>
     </Card>
