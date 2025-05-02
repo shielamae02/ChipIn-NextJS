@@ -133,7 +133,10 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
             />
 
             <DrawerFooter className='border-t mt-auto'>
-              <Button type='submit' disabled={!isValid || isLoading}>
+              <Button
+                type='submit'
+                disabled={!isValid || isLoading || isAmountMismatch}
+              >
                 {isLoading ? "Updating..." : "Update Expense"}
               </Button>
               <DrawerClose asChild>
