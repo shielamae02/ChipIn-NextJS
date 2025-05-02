@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import CreateSession from "@/components/session/CreateSession";
+import { FadeIn } from "@/components/shared/FadeIn";
 
 export const metadata: Metadata = {
   title: "Create Session | ChipIn",
@@ -20,9 +21,11 @@ export default function Page() {
           </Link>
         </Button>
       </header>
-      <div className='flex-1 flex items-start mx-auto px-4 md:px-6 w-full justify-center py-8 container'>
-        <CreateSession />
-      </div>
+      <FadeIn duration={100}>
+        <div className='flex-1 flex items-start mx-auto px-4 md:px-6 w-full justify-center py-8 container'>
+          <CreateSession />
+        </div>
+      </FadeIn>
     </section>
   );
 }
