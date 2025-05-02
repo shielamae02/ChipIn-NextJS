@@ -26,7 +26,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         {children}
-        <Toaster />
+        <Toaster expand={true} duration={4000} visibleToasts={5} />
       </TooltipProvider>
     </QueryClientProvider>
   );
