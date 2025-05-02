@@ -1,7 +1,6 @@
 "use client";
 
 import { Users } from "lucide-react";
-import { useParams } from "next/navigation";
 import { useParticipants } from "@/hooks";
 import { ParticipantCard } from "@/components/participants/ParticipantCard";
 import { CreateParticipant } from "@/components/participants/CreateParticipant";
@@ -15,12 +14,22 @@ import {
 } from "@/components/ui/card";
 import { ParticipantsWarningCard } from "@/components/participants/ParticipantsWarningCard";
 import { FadeIn } from "@/components/shared/FadeIn";
+import { useSessionStore } from "@/store/sessionStore";
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  const { id } = useParams();
-  const session_id = id as string;
+  const { session, hasHydrated } = useSessionStore();
+  const [canLoadParticipants, setCanLoadParticipants] = useState(false);
 
-  const { participants, isLoading } = useParticipants(session_id);
+  useEffect(() => {
+    if (hasHydrated && session && session.id) {
+      setCanLoadParticipants(true);
+    }
+  }, [hasHydrated, session, session?.id]);
+
+  const { participants, isLoading } = useParticipants(
+    canLoadParticipants ? session?.id : undefined
+  );
 
   return (
     <FadeIn duration={200}>

@@ -17,9 +17,19 @@ import { useForm } from "react-hook-form";
 import { Session } from "@/types/session";
 import { toast } from "sonner";
 import { useCreateParticipant } from "@/hooks";
-import { Participant } from "@/types/participant";
+import { useSessionStore } from "@/store/sessionStore";
+import { useSearchParams } from "next/navigation";
+
+export const getSession = async (id: string) => {
+  const response = await fetch(`/api/sessions/${id}`);
+  if (!response.ok) throw new Error("Session not found");
+  return response.json();
+};
 
 const JoinSession = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") || "";
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,31 +46,17 @@ const JoinSession = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/participants?session_id=${data.id}`);
-      const result = await response.json();
-      const participants: Participant[] = Array.isArray(result) ? result : [];
-
-      const trimmed = data.name.trim().toLowerCase();
-      const nameAlreadyExists = participants.some(
-        (p) => p.name.trim().toLowerCase() === trimmed
-      );
-
-      const finalName = nameAlreadyExists ? `${trimmed} (2)` : trimmed;
-
+      const session = await getSession(data.id);
+      useSessionStore.getState().setSession(session);
       await createParticipant({
         values: {
-          name: finalName,
-          id: data.id,
+          name: data.name,
+          id: "",
         },
         session_id: data.id,
       });
 
       toast.success("Successfully joined the session!");
-
-      if (nameAlreadyExists) {
-        toast.success("Please update your name to a unique one.");
-      }
-
       router.push(`/dashboard/${data.id}/participants`);
       reset();
     } catch (err) {
@@ -94,6 +90,7 @@ const JoinSession = () => {
             <Label htmlFor='id'>Session ID</Label>
             <Input
               id='id'
+              value={id}
               placeholder='Enter the session ID'
               {...register("id", { required: true })}
               className='h-11'

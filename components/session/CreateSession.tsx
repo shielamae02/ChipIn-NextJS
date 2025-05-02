@@ -38,7 +38,6 @@ const CreateSession = () => {
 
     try {
       const response = await createSession(data);
-      router.push(`/dashboard/${response.id}/participants`);
       await createParticipant({
         values: {
           name: data.creator,
@@ -46,6 +45,7 @@ const CreateSession = () => {
         },
         session_id: response.id,
       });
+      router.push(`/dashboard/${response.id}/participants`);
       reset();
     } catch (err) {
       console.error("Error creating session:", err);
