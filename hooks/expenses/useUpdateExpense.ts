@@ -39,6 +39,9 @@ const useUpdateExpense = (event_id: string, expense_id: string) => {
         queryClient.invalidateQueries({
           queryKey: ["events", session.id],
         });
+        queryClient.invalidateQueries({
+          queryKey: ["eventBalances", event_id],
+        });
       }
       toast.success("Expense updated successfully.");
     },
