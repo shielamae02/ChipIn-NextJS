@@ -39,25 +39,6 @@ export async function POST(request: Request) {
   return NextResponse.json(data);
 }
 
-export async function DELETE(request: Request) {
-  const body = await request.json();
-  const { id } = body;
-
-  if (!id) {
-    return NextResponse.json(
-      { error: "Participant ID is required." },
-      { status: 400 }
-    );
-  }
-
-  const { error } = await supabase.from("participants").delete().eq("id", id);
-
-  if (error)
-    return NextResponse.json({ error: error.message }, { status: 400 });
-
-  return NextResponse.json({ message: "Participant deleted successfully." });
-}
-
 export async function PUT(request: Request) {
   const body = await request.json();
   const { id, name } = body;
