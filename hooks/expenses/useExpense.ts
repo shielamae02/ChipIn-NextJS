@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useExpense = (expense_id?: string) => {
   const { data: expense, isLoading } = useQuery<Expense>({
-    queryKey: ["expense", expense_id],
+    queryKey: ["expense", {expense_id}],
     queryFn: async () => {
       const response = await fetch(`/api/expenses/${expense_id}`);
 
