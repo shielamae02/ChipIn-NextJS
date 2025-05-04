@@ -1,8 +1,9 @@
 "use client";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { initRealtimeListener } from "@/lib/supabase/realtime-listener";
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useMemo(() => {
@@ -16,6 +17,14 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
       },
     });
   }, []);
+
+  useEffect(() => {
+    const channel = initRealtimeListener(queryClient);
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
