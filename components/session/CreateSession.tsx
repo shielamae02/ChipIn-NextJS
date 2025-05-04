@@ -63,7 +63,7 @@ const CreateSession = () => {
             <CreditCard className='h-5 w-5 text-primary' />
           </div>
         </div>
-        <CardTitle className='text-2xl leading-tight font-semibold'>
+        <CardTitle className='text-xl sm:text-2xl leading-tight font-semibold'>
           Create a New Session
         </CardTitle>
         <CardDescription>
@@ -110,7 +110,7 @@ const CreateSession = () => {
             buttonLoadingText='Creating Session...'
             disabled={isLoading}
           />
-          <p className='text-xs text-muted-foreground'>
+          <p className='text-xs text-muted-foreground text-center'>
             Got a session ID?
             <Link href='/join'>
               <span className='mx-1 text-zinc-700 hover:text-primary font-medium transition-colors hover:underline cursor-pointer'>
