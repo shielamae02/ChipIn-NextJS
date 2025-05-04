@@ -2,10 +2,8 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Participant } from "@/types/participant";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useSessionStore } from "@/store/sessionStore";
-import { ConfirmationDialog } from "@/components/common/ConfirmationDialog";
-import { useDeleteParticipant } from "@/hooks";
 import { UpdateParticipantDialog } from "@/components/participants/UpdateParticipantDialog";
 import { Badge } from "../ui/badge";
 
@@ -19,7 +17,6 @@ const ParticipantCard = ({
   participants,
 }: ParticipantCardProps) => {
   const { session } = useSessionStore();
-  const { deleteParticipant } = useDeleteParticipant();
 
   return (
     <article
@@ -58,13 +55,15 @@ const ParticipantCard = ({
           </Button>
         </UpdateParticipantDialog>
 
-        <ConfirmationDialog
+        {/* <ConfirmationDialog
           title='Delete Participant'
           description={`Are you sure you want to delete ${participant.name}? This
               will remove them from all expenses they are part of.`}
-          onClick={async () =>
-            participant.id && (await deleteParticipant({ id: participant.id }))
-          }
+          onClick={async () => {
+            if (participant.id && deleteParticipant) {
+              await deleteParticipant({ id: participant.id });
+            }
+          }}
           actionText='Delete'
           variant='destructive'
         >
@@ -76,7 +75,7 @@ const ParticipantCard = ({
           >
             <Trash2 className='size-4' />
           </Button>
-        </ConfirmationDialog>
+        </ConfirmationDialog> */}
       </div>
     </article>
   );
