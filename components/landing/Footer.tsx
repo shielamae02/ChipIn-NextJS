@@ -1,13 +1,14 @@
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+
 const Footer = () => {
   return (
-    <footer className='border-t bg-muted/50'>
+    <footer className='border-t bg-muted/50 scroll-mt-4'>
       <div className='max-w-6xl mx-auto px-4 md:px-6 py-12'>
         <div className='grid gap-8 lg:grid-cols-4'>
           {/* Branding Section */}
           <div className='space-y-4'>
             <div className='flex items-center gap-2 font-bold text-xl'>
-              <span className='text-primary'>Chip</span>
-              <span>In</span>
+              <span className='text-primary'>ChipIn</span>
             </div>
             <p className='text-sm text-muted-foreground'>
               Making expense splitting simple, fair, and stress-free for
@@ -52,6 +53,24 @@ const Footer = () => {
         <div className='mt-8 border-t pt-8 flex flex-col md:flex-row justify-between items-center'>
           <p className='text-xs text-muted-foreground'>
             © 2025 ChipIn. All rights reserved.
+          </p>
+          <p className='text-xs text-muted-foreground'>
+            🌀 developed by{" "}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href='https://shiela-mae-lepon.vercel.app/'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className=' text-sky-700 hover:text-sky-800 transition duration-300'
+                >
+                  <span className='hover:animate-pulse'>Shiela Mae Lepon</span>
+                </a>
+              </TooltipTrigger>
+              <TooltipContent side='top'>
+                <p>Click to view my portfolio 💼</p>
+              </TooltipContent>
+            </Tooltip>
           </p>
           <div className='flex gap-4 mt-4 md:mt-0'>
             {["Terms of Service", "Privacy Policy", "Cookie Policy"].map(
