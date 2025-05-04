@@ -133,7 +133,7 @@ const JoinSession = () => {
             buttonLoadingText='Joining Session...'
             disabled={isLoading}
           />
-          <p className='text-xs text-muted-foreground'>
+          <p className='text-xs text-muted-foreground text-center'>
             Would you like to
             <Link href='/create'>
               <span className='mx-1 text-zinc-700 hover:text-primary font-medium transition-colors hover:underline cursor-pointer'>
