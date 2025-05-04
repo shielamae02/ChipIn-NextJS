@@ -79,8 +79,8 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
       setPaidBy({});
       setSplitAmong([]);
     } catch (err) {
-      console.error("Error creating expense:", err);
       toast.error("Something went wrong.");
+      console.error("Error creating expense:", err);
     } finally {
       setIsLoading(false);
     }
