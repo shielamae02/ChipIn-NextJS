@@ -90,7 +90,7 @@ export default function DashboardLayout({
                 <CreateEventDialog>
                   <Button
                     disabled={participants.length < 2}
-                    className='text-sm bg-zinc-800 hover:bg-zinc-900 text-white shadow-lg transition duration-300'
+                    className='text-sm bg-zinc-800 h-8 sm:h-auto hover:bg-zinc-900 text-white shadow-lg transition duration-300'
                   >
                     <Plus />
                     <span className='hidden sm:block'>Add Event</span>
