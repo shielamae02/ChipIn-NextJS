@@ -14,7 +14,7 @@ interface ItemProps {
 
 const FAQ = () => {
   return (
-    <section id='faq' className='py-16 md:py-24 bg-background mt-4'>
+    <section id='faq' className='py-16 md:py-24 bg-background scroll-mt-4'>
       <div className='container mx-auto px-4 md:px-6'>
         <div className='flex flex-col items-center justify-center space-y-4 text-center'>
           <div className='space-y-2'>
