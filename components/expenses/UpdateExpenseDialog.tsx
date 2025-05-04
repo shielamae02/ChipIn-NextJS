@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Receipt, Trash2 } from "lucide-react";
 import { Expense } from "@/types/expense";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ExpenseForm } from "./ExpenseForm";
 import { useDeleteExpense, useExpense, useUpdateExpense } from "@/hooks";
@@ -54,6 +54,12 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
     formState: { isValid },
   } = methods;
 
+  useEffect(() => {
+    if (expense) {
+      reset(expense);
+    }
+  }, [expense, reset]);
+
   const onSubmit = async (data: Expense) => {
     setIsLoading(true);
     try {
@@ -95,7 +101,6 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
       setSplitAmong([]);
     } catch (err) {
       console.error("Error creating expense:", err);
-      toast.error("Something went wrong.");
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +134,7 @@ const UpdateExpenseDialog: React.FC<UpdateExpenseDialogProps> = ({
                 >
                   <Button className='bg-red-50 mr-5 text-red-600 border-red-100 hover:bg-red-100 hover:text-red-600 '>
                     <Trash2 className='size-4' />
-                    Delete Expense
+                    <span className='hidden sm:block'>Delete Expense</span>
                   </Button>
                 </ConfirmationDialog>
               </div>

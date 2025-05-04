@@ -30,17 +30,20 @@ const useUpdateExpense = (event_id: string, expense_id: string) => {
       await updateExpenseRequest({ ...expense }, expense_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["expenses", event_id],
+        queryKey: ["expense", { expense_id }],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["expenses", { event_id }],
       });
       if (session) {
         queryClient.invalidateQueries({
-          queryKey: ["participants", session.id],
+          queryKey: ["participants", { sessionId: session.id }],
         });
         queryClient.invalidateQueries({
-          queryKey: ["events", session.id],
+          queryKey: ["events", { sessionId: session.id }],
         });
         queryClient.invalidateQueries({
-          queryKey: ["eventBalances", event_id],
+          queryKey: ["eventBalances", { event_id }],
         });
       }
       toast.success("Expense updated successfully.");

@@ -5,7 +5,7 @@ import { Participant } from "@/types/participant";
 
 const useParticipants = (session_id?: string) => {
   const { data: participants = [], isLoading } = useQuery<Participant[]>({
-    queryKey: ["participants", session_id],
+    queryKey: ["participants", { session_id }],
     queryFn: async () => {
       const response = await fetch(
         `/api/participants?session_id=${session_id}`

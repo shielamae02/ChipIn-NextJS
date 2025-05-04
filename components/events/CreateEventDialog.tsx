@@ -58,8 +58,7 @@ const CreateEventDialog: React.FC<CreateEventDialogProps> = ({ children }) => {
       }
       reset();
     } catch (err) {
-      console.error("Error adding participant:", err);
-      toast.error("Something went wrong.");
+      console.error("Error adding event:", err);
     } finally {
       setIsLoading(false);
     }

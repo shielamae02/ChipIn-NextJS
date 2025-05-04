@@ -32,7 +32,7 @@ const EventCard = (event: Event) => {
 
   const { expenses } = useExpenses(event.id);
   const { participants } = useParticipants(session_id);
-  const { deleteEvent } = useDeleteEvent(session_id);
+  const { deleteEvent } = useDeleteEvent(session_id, event.id || "");
   const { eventBalances } = useEventBalances(event.id);
 
   const mergedParticipants = participants.map((p) => {

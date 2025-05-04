@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useEventBalances = (event_id?: string) => {
   const { data: eventBalances = [], isLoading } = useQuery<EventBalance[]>({
-    queryKey: ["eventBalances", event_id],
+    queryKey: ["eventBalances", { event_id }],
     queryFn: async () => {
       const response = await fetch(`/api/events/${event_id}/balances`);
       if (!response.ok) {

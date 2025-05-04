@@ -123,7 +123,10 @@ export default function SettlementSummary({
   return (
     <div className='space-y-4'>
       <div className='flex flex-col sm:flex-row sm:items-end sm:justify-between space-x-2 gap-2'>
-        <ReminderWarningCard />
+        <ReminderWarningCard
+          content=' This session lasts one day—don’t forget to download your expenses data
+        before it’s gone!😱'
+        />
         <Button
           onClick={() =>
             exportToPDF({
@@ -215,15 +218,15 @@ export default function SettlementSummary({
               <CardTitle className='text-xl'>Settlement Plan</CardTitle>
             </div>
             <CardDescription>
-              The most efficient way to settle all debts
+              The most efficient way to settle all debts 💪
             </CardDescription>
           </CardHeader>
           <CardContent>
             {transactions.length === 0 ? (
               <p className='text-zinc-500 dark:text-zinc-400 text-center'>
                 {events.length === 0
-                  ? "No expenses added yet"
-                  : "All balances are settled"}
+                  ? "No expenses added yet 🧐"
+                  : "All balances are settled 🚀"}
               </p>
             ) : (
               <ScrollArea className='h-[200px] pr-4'>

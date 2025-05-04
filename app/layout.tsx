@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang='en' className={poppins.variable}>
       <body className={`antialiased overflow-x-hidden`}>
         <Provider>
-          <main className='min-h-screen w-screen'>{children}</main>
+          <main className='min-h-screen w-screen relative'>{children}</main>
         </Provider>
       </body>
     </html>

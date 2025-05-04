@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import { Event } from "@/types/event";
 import { Button } from "../ui/button";
 import { Receipt } from "lucide-react";
@@ -80,7 +79,6 @@ const CreateExpenseDialog: React.FC<CreateExpenseDialogProps> = ({
       setSplitAmong([]);
     } catch (err) {
       console.error("Error creating expense:", err);
-      toast.error("Something went wrong.");
     } finally {
       setIsLoading(false);
     }

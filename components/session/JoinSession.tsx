@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CreditCard } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomButton } from "../shared/CustomButton";
 import { useForm } from "react-hook-form";
 import { Session } from "@/types/session";
@@ -19,10 +19,14 @@ import { toast } from "sonner";
 import { useCreateParticipant } from "@/hooks";
 import { useSessionStore } from "@/store/sessionStore";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export const getSession = async (id: string) => {
   const response = await fetch(`/api/sessions/${id}`);
-  if (!response.ok) throw new Error("Session not found");
+  if (!response.ok) {
+    toast.error("Session not found.");
+    throw new Error("Session not found.");
+  }
   return response.json();
 };
 
@@ -38,30 +42,36 @@ const JoinSession = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     formState: { errors },
-  } = useForm<Session>();
+  } = useForm<Session>({
+    defaultValues: {
+      id: id,
+    },
+  });
+
+  useEffect(() => {
+    if (id) {
+      setValue("id", id);
+    }
+  }, [id, setValue]);
 
   const onSubmit = async (data: Session) => {
     setIsLoading(true);
 
     try {
       const session = await getSession(data.id);
-      useSessionStore.getState().setSession(session);
+
       await createParticipant({
-        values: {
-          name: data.name,
-          id: "",
-        },
+        values: { id: "", name: data.name },
         session_id: data.id,
+        showToast: false,
       });
 
-      toast.success("Successfully joined the session!");
+      useSessionStore.getState().setSession(session);
       router.push(`/dashboard/${data.id}/participants`);
-      reset();
     } catch (err) {
       console.error("Error creating session:", err);
-      toast.error("Something went wrong.");
     } finally {
       setIsLoading(false);
     }
@@ -90,7 +100,6 @@ const JoinSession = () => {
             <Label htmlFor='id'>Session ID</Label>
             <Input
               id='id'
-              value={id}
               placeholder='Enter the session ID'
               {...register("id", { required: true })}
               className='h-11'
@@ -116,7 +125,7 @@ const JoinSession = () => {
             )}
           </div>
         </CardContent>
-        <CardFooter className='pt-4'>
+        <CardFooter className='pt-4 flex flex-col gap-3'>
           <CustomButton
             type='submit'
             isLoading={isLoading}
@@ -124,6 +133,15 @@ const JoinSession = () => {
             buttonLoadingText='Joining Session...'
             disabled={isLoading}
           />
+          <p className='text-xs text-muted-foreground text-center'>
+            Would you like to
+            <Link href='/create'>
+              <span className='mx-1 text-zinc-700 hover:text-primary font-medium transition-colors hover:underline cursor-pointer'>
+                create a session
+              </span>
+            </Link>
+            instead?
+          </p>
         </CardFooter>
       </form>
     </Card>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import JoinSession from "@/components/session/JoinSession";
-import { Suspense } from "react";
+import { FadeIn } from "@/components/shared/FadeIn";
 
 export default function Page() {
   return (
@@ -14,11 +14,11 @@ export default function Page() {
           </Link>
         </Button>
       </header>
-      <div className='flex-1 flex items-start mx-auto px-4 md:px-6 w-full justify-center py-8 container'>
-        <Suspense fallback={<div>Loading...</div>}>
+      <FadeIn duration={100}>
+        <div className='flex-1 flex items-start mx-auto px-4 md:px-6 w-full justify-center py-8 container'>
           <JoinSession />
-        </Suspense>
-      </div>
+        </div>
+      </FadeIn>
     </section>
   );
 }

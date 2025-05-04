@@ -4,7 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useEffect } from "react";
 import { Calendar1, Plus } from "lucide-react";
-import { formatDateTime } from "@/lib/utils";
+import { formatDateTime, getTimeEmoji } from "@/lib/utils";
 import { useSessionStore } from "@/store/sessionStore";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { usePathname, useRouter } from "next/navigation";
@@ -57,7 +57,16 @@ export default function DashboardLayout({
             <FadeIn duration={200}>
               <p className='text-xs sm:text-sm text-muted-foreground flex items-center'>
                 <Calendar1 className='size-3 mr-1 sm:size-4' />
-                {session?.created_at ? formatDateTime(session.created_at) : ""}
+                {session?.created_at ? (
+                  <>
+                    {formatDateTime(session.created_at)}
+                    <span className='mr-1'>
+                      {getTimeEmoji(session.created_at)}
+                    </span>
+                  </>
+                ) : (
+                  ""
+                )}
               </p>
             </FadeIn>
           </div>
@@ -90,7 +99,7 @@ export default function DashboardLayout({
                 <CreateEventDialog>
                   <Button
                     disabled={participants.length < 2}
-                    className='text-sm bg-zinc-800 hover:bg-zinc-900 text-white shadow-lg transition duration-300'
+                    className='text-sm bg-zinc-800 h-8 sm:h-auto hover:bg-zinc-900 text-white shadow-lg transition duration-300'
                   >
                     <Plus />
                     <span className='hidden sm:block'>Add Event</span>
