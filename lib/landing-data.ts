@@ -139,10 +139,10 @@ export const FAQData = [
 ];
 
 export const SOCIALS = [
-  { icon: Twitter },
-  { icon: Facebook },
-  { icon: Instagram },
-  { icon: Github },
+  { icon: Twitter, link: "" },
+  { icon: Facebook, link: "" },
+  { icon: Instagram, link: "" },
+  { icon: Github, link: "https://github.com/shielamae02" },
 ];
 
 export const DETAILS = [

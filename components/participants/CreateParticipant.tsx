@@ -45,7 +45,6 @@ const CreateParticipant = ({
       reset();
     } catch (err) {
       console.error("Error adding participant:", err);
-      toast.error("Something went wrong.");
     } finally {
       setIsLoading(false);
     }

@@ -29,7 +29,7 @@ const useCreateEvent = (session_id: string) => {
       await createEventRequest(event, session_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["events", session_id],
+        queryKey: ["events", { session_id }],
       });
       toast.success("Successfully created the event.");
     },

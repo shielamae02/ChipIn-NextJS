@@ -1,7 +1,7 @@
 "use client";
 
 import { EventCard } from "@/components/events/EventCard";
-import { useEvents } from "@/hooks";
+import { useEvents, useParticipants } from "@/hooks";
 import { useParams } from "next/navigation";
 import { EmptyEvents } from "@/components/events/EmptyEventsCard";
 import { EventCardSkeleton } from "@/components/events/EventsCardSkeleton";
@@ -11,6 +11,7 @@ export default function Page() {
   const { id } = useParams();
   const session_id = id as string;
   const { events, isLoading } = useEvents(session_id);
+  const { participants } = useParticipants(session_id);
 
   return (
     <>
@@ -23,7 +24,7 @@ export default function Page() {
           </div>
         ) : events.length === 0 ? (
           <>
-            <ParticipantsWarningCard />
+            {participants.length < 2 && <ParticipantsWarningCard />}
             <EmptyEvents />
           </>
         ) : (
