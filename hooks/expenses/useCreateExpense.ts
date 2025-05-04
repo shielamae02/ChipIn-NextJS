@@ -30,17 +30,17 @@ const useCreateExpense = (event_id: string) => {
       await createExpenseRequest({ ...expense, event_id }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["expenses", event_id],
+        queryKey: ["expenses", {event_id}],
       });
       queryClient.invalidateQueries({
-        queryKey: ["eventBalances", event_id],
+        queryKey: ["eventBalances", {event_id}],
       });
       if (session) {
         queryClient.invalidateQueries({
-          queryKey: ["participants", session.id],
+          queryKey: ["participants", { sessionId: session.id }],
         });
         queryClient.invalidateQueries({
-          queryKey: ["events", session.id],
+          queryKey: ["events", { sessionId: session.id }],
         });
       }
       toast.success("Expense created successfully.");
