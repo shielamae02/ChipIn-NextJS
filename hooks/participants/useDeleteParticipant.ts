@@ -17,13 +17,20 @@ const deleteParticipantRequest = async ({ id }: { id: string }) => {
   return response;
 };
 
-const useDeleteParticipant = () => {
+const useDeleteParticipant = (session_id: string) => {
   const queryClient = useQueryClient();
 
   const { mutateAsync: deleteParticipant } = useMutation({
     mutationFn: deleteParticipantRequest,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["participants"] });
+      queryClient.invalidateQueries({ queryKey: ["events", { session_id }] });
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      queryClient.invalidateQueries({
+        queryKey: ["participants", { session_id }],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["eventBalances"],
+      });
       toast.success("Successfully deleted the participant.");
     },
     onError: (err: any) => {
