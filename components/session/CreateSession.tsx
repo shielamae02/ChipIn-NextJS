@@ -15,9 +15,10 @@ import { useState } from "react";
 import { CustomButton } from "../shared/CustomButton";
 import { useForm } from "react-hook-form";
 import { Session } from "@/types/session";
-import { toast } from "sonner";
 import { useCreateSession } from "@/hooks";
 import { useCreateParticipant } from "@/hooks";
+import { ReminderWarningCard } from "../settlement/ReminderWarningCard";
+import Link from "next/link";
 
 const CreateSession = () => {
   const router = useRouter();
@@ -38,6 +39,7 @@ const CreateSession = () => {
 
     try {
       const response = await createSession(data);
+      router.push(`/dashboard/${response.id}/participants`);
       await createParticipant({
         values: {
           name: data.creator,
@@ -45,11 +47,9 @@ const CreateSession = () => {
         },
         session_id: response.id,
       });
-      router.push(`/dashboard/${response.id}/participants`);
       reset();
     } catch (err) {
       console.error("Error creating session:", err);
-      toast.error("Something went wrong.");
     } finally {
       setIsLoading(false);
     }
@@ -69,6 +69,10 @@ const CreateSession = () => {
         <CardDescription>
           Start a new expense splitting session for your group
         </CardDescription>
+        <ReminderWarningCard
+          content='Choose your session name carefully — no take-backs! 🚫✏️'
+          className='w-full'
+        />
       </CardHeader>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -98,7 +102,7 @@ const CreateSession = () => {
             )}
           </div>
         </CardContent>
-        <CardFooter className='pt-4'>
+        <CardFooter className='pt-4 flex flex-col gap-3'>
           <CustomButton
             type='submit'
             isLoading={isLoading}
@@ -106,6 +110,15 @@ const CreateSession = () => {
             buttonLoadingText='Creating Session...'
             disabled={isLoading}
           />
+          <p className='text-xs text-muted-foreground'>
+            Got a session ID?
+            <Link href='/join'>
+              <span className='mx-1 text-zinc-700 hover:text-primary font-medium transition-colors hover:underline cursor-pointer'>
+                Join your session
+              </span>
+            </Link>
+            now!
+          </p>
         </CardFooter>
       </form>
     </Card>
