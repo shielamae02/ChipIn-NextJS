@@ -45,7 +45,9 @@ const DashboardHeader = () => {
             actionText='Exit Session'
             variant='destructive'
           >
-            <Logo />
+            <h1>
+              <Logo />
+            </h1>
           </ConfirmationDialog>
 
           <div className='ml-auto flex gap-2'>
