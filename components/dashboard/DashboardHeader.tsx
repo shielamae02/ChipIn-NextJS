@@ -9,6 +9,7 @@ import { ConfirmationDialog } from "../common/ConfirmationDialog";
 import { useState } from "react";
 import { Loading } from "../common/Loading";
 import { toast } from "sonner";
+import { Logo } from "../common/Logo";
 
 const DashboardHeader = () => {
   const [isExiting, setIsExiting] = useState(false);
@@ -44,8 +45,8 @@ const DashboardHeader = () => {
             actionText='Exit Session'
             variant='destructive'
           >
-            <h1 className='text-xl font-medium'>
-              Chip<span className='font-bold'>In</span>
+            <h1>
+              <Logo />
             </h1>
           </ConfirmationDialog>
 
