@@ -1,9 +1,10 @@
 "use client";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { NavData } from "@/lib/landing-data";
-import { HandCoins, Menu } from "lucide-react";
-import Link from "next/link";
+import { Menu } from "lucide-react";
 import { MobileHeader } from "./MobileHeader";
+import { Logo } from "../common/Logo";
 
 interface ItemProps {
   title: string;
@@ -16,12 +17,9 @@ const Header = () => {
     <header className='sticky top-0 z-50 w-full md:border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4'>
       <div className=' flex h-16 items-center justify-between mx-auto max-w-6xl'>
         {/* Logo */}
-        <div className='flex items-center gap-2 font-bold text-xl'>
-          <HandCoins />
-          <Link href='/' className='text-primary'>
-            ChipIn
-          </Link>
-        </div>
+        <Link href='/' className='text-primary'>
+          <Logo />
+        </Link>
 
         {/* Desktop Nav */}
         <nav className='hidden md:flex gap-8'>
